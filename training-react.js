@@ -81,7 +81,7 @@ function Component2(props) {
 const Member = (props) => {
     const {name, age, handleTranfer, handleEdit, renderExtend} = props;
     return <div>
-        <span>name: {name}</span> -<span>age: {age}</span>
+        <span>name: {name}</span> -- <span>age: {age}</span>
         <button onClick={() => handleTranfer()}>tranfer</button>
         <button onClick={() => handleEdit()}>edit</button>
         {renderExtend && renderExtend()}
@@ -172,13 +172,22 @@ const TranferMember = () => {
         setFormData(INIT_DATA)
     }
     
-    
-    
-    const handleEdit = () => {
-        
+
+    const fillReact = (user, index) => {
+        setFormData({
+            ...user,
+            index: index,
+            classType:'react'
+        })
     }
-  
-        
+    
+    const fillJava = (user, index) =>{
+        setFormData({
+            ...user,
+            index: index,
+            classType:'java'
+        })
+    }     
 
     return (
         <div>
@@ -187,7 +196,7 @@ const TranferMember = () => {
             return <Member name={user.name} age={user.age}
             key={index}
             handleTranfer={() => tranferReactToJavaMember(index)} 
-            handleEdit={() => handleEdit(index)}
+            handleEdit={() => {fillReact(user, index)}}
 
             //   renderExtend={() => <span>hello by react</span> 
             />
@@ -197,7 +206,7 @@ const TranferMember = () => {
             return <Member name={user.name} age={user.age}
             key={index}
             handleTranfer={() => tranferJavaToReactMember(index)}
-            handleEdit={() => handleEdit(index)}
+            handleEdit={() => {fillJava(user, index)}}
 
             //   renderExtend={() => <span>hello by java</span>}/>
 
@@ -215,25 +224,23 @@ const TranferMember = () => {
             
         >
             <label>name</label>
-            <input 
-            name="name"
-            value={formData.name}
-            onChange={(e) => handleInput(e)}></input>
+            <input name="name" value={formData.name}
+                    onChange={(e) => handleInput(e)}>
+            </input>
             {" --- "}
             <label>age</label>
-            <input
-            value={formData.age}
-            name="age"
-            onChange={(e) => handleInput(e)}
-            ></input>
-            <select
-            name="classType"
-            onChange={(e) => handleInput(e)}
-            value={formData.classType}>
+            <input value={formData.age} name="age"
+                onChange={(e) => handleInput(e)}
+            >
+            </input>
+
+            <select name="classType" onChange={(e) => handleInput(e)}
+                value={formData.classType}>
                 <option value="react">React</option>
                 <option value="java">Java</option>
             </select>
-            <button >submit</button>
+            {/* <button >submit</button> */}
+            <button>update</button>
             {/* checkme<input type="checkbox" name="testCheckbox" /> */}
         </form>
         </div>
@@ -241,15 +248,18 @@ const TranferMember = () => {
 
 }
 
-const Test = () => {
-    const [off, setOff] = React.useState();
 
-    return <div>
 
-    {!off && <TranferMember />}
-    <button onClick={() => setOff(!off)}>change</button>
-    </div>
-}
+
+// const Test = () => {
+//     const [off, setOff] = React.useState();
+
+//     return <div>
+
+//     {!off && <TranferMember />}
+//     <button onClick={() => setOff(!off)}>change</button>
+//     </div>
+// }
 // props: {name: "button 3"}
 ReactDOM.render(<div>
     <TranferMember />
