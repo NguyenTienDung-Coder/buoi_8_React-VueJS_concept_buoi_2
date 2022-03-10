@@ -79,11 +79,12 @@ function Component2(props) {
 }
 
 const Member = (props) => {
-    const {name, age, handleTranfer, handleEdit, renderExtend} = props;
+    const {name, age, handleTranfer, handleEdit, handleDelete, renderExtend} = props;
     return <div>
         <span>name: {name}</span> -- <span>age: {age}</span>
         <button onClick={() => handleTranfer()}>tranfer</button>
         <button onClick={() => handleEdit()}>edit</button>
+        <button onClick={() => handleDelete()}>Delete</button>
         {renderExtend && renderExtend()}
     </div>
 }
@@ -189,14 +190,39 @@ const TranferMember = () => {
         })
     }     
 
+    // ----------------------------------------------------------------
+
+
+    
+    // Delete
+    const handleDeleteReact = (index) => {
+        reactMembers.splice(index, 1)
+        setFormData([
+            ...reactMembers
+        ])
+    }
+    const handleDeleteJava = (index) => {
+        javaMembers.splice(index, 1)
+        setFormData([
+            ...javaMembers
+        ])
+    }
+
+
+    
+    
+    
+    // ----------------------------------------------------------------
     return (
+
         <div>
         <h1>list member of React class</h1>
         {reactMembers.length > 0 ? reactMembers.map((user, index) => {
             return <Member name={user.name} age={user.age}
             key={index}
             handleTranfer={() => tranferReactToJavaMember(index)} 
-            handleEdit={() => {fillReact(user, index)}}
+            handleEdit={() =>fillReact(user, index)}
+            handleDelete={() => handleDeleteReact(index)}
 
             //   renderExtend={() => <span>hello by react</span> 
             />
@@ -206,7 +232,9 @@ const TranferMember = () => {
             return <Member name={user.name} age={user.age}
             key={index}
             handleTranfer={() => tranferJavaToReactMember(index)}
-            handleEdit={() => {fillJava(user, index)}}
+            handleEdit={() => fillJava(user, index)}
+            handleDelete={() => handleDeleteJava(index)}
+
 
             //   renderExtend={() => <span>hello by java</span>}/>
 
@@ -244,6 +272,8 @@ const TranferMember = () => {
             {/* checkme<input type="checkbox" name="testCheckbox" /> */}
         </form>
         </div>
+
+        
     )
 
 }
